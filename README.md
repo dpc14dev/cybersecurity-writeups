@@ -1,5 +1,3 @@
-# cybersecurity-writeups
-Real-world cybersecurity incident write-ups and security labs
 # Cybersecurity Write-ups
 
 This repository contains practical cybersecurity incident write-ups and security lab exercises based on real-world scenarios and simulations.
