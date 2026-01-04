@@ -1,0 +1,39 @@
+## Objective
+To configure a policy within the Symantec Enforce Console that detects, monitors, and prevents the unauthorized transfer of Credit Card Numbers (CCN) across Endpoint (USB/Printing) and Network (Email) channels.
+
+---
+
+## 1. Detection Logic
+We utilize **Content-Aware Detection** using built-in Symantec Data Identifiers.
+
+* **Identifier:** Credit Card Numbers (Includes Visa, MC, Amex, Discover).
+* **Validation:** Uses the **Luhn Check** algorithm to reduce false positives by verifying the mathematical validity of the number string.
+* **Thresholds:**
+    * **Low Severity:** 1–5 matches (Monitor & Audit).
+    * **High Severity:** 6+ matches (Block & Notify).
+
+---
+
+## 2. Policy Configuration Steps
+
+### Step A: Define the Condition
+1.  Navigate to **Manage > Policies > New Policy**.
+2.  Select **Add Rule** -> **Content Matches Data Identifier**.
+3.  Choose **Credit Card Numbers**.
+4.  Set the "Count" to `1` or more.
+
+### Step B: Configure Response Rules
+We want different actions based on the "state" of the data:
+
+| Channel | Action | User Experience |
+| :--- | :--- | :--- |
+| **Endpoint (USB)** | **Block** | Desktop Popup with Justification required. |
+| **Network (Email)** | **Quarantine** | Sender receives a "Message Delayed" notification. |
+| **Cloud (SaaS)** | **Remove Sharing** | File permissions reset to "Private". |
+
+---
+
+## 3. Deployment
+The policy is assigned to the **Global Policy Group** and pushed to the **Detection Servers**. 
+
+> **Note:** Initial deployment is set to **Monitor Only** for 7 days to identify legitimate business processes that may trigger the rule (Tuning Phase).
